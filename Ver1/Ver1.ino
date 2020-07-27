@@ -1,6 +1,6 @@
 //#define USEI2C
 
-#include <NewPing.h>
+// book: https://www.alternative-energy-tutorials.com/wave-energy/wave-energy.html
 
 #ifdef USEI2C
 #include <LiquidCrystal_I2C.h>
@@ -11,17 +11,15 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 #endif
 
 class CWave {
-  void Meashured(uint16_t dist);
-  uint16_t GetTime();
-  uint16_t GetHeight();
+  void Meashured(uint16_t _distance);
+  uint16_t GetPeriod();
+  uint16_t GetHeightCm();
 } wave;
 
 // defines pins numbers
 const int trigPin = A1;
 const int echoPin = A2;
 const int maxDist = 200; // Максимальная дистанция измерения в сантиметрах. Не более 200-400
-
-NewPing sonar(trigPin, echoPin, maxDist);
 
 void clearLine(int line){
   lcd.setCursor(0, 1);
@@ -30,7 +28,7 @@ void clearLine(int line){
 
 void printDisplay(String message){
   clearLine(1);
-  Serial.println(message);
+  //Serial.println(message);
   lcd.setCursor(0, 1);
   lcd.print(message);
 }
@@ -56,9 +54,9 @@ void setup() {
 
 long duration;
 int distance;
+int cnt =0;
 
 void loop() {
-  //distance = sonar.ping_cm();
   
   digitalWrite(trigPin, LOW);
   delayMicroseconds(100);
@@ -68,8 +66,13 @@ void loop() {
   
   duration = pulseIn(echoPin, HIGH, 10000);
   distance = duration / 59;//cm = duration/58.8  
+  cnt++;
+  if(cnt == 1000){
+    cnt = 0;
+    Serial.println(millis()); // Одно измерение длится 10мс
+  }
   
-  Serial.println(distance);
+  //Serial.println(distance);
   printDisplay(String(distance));
 
   //+delay(50);

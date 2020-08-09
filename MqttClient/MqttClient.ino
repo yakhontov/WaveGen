@@ -57,6 +57,7 @@ const char wifiSSID[] = "YourSSID";
 const char wifiPass[] = "YourWiFiPass";
 
 // MQTT details
+// http://www.hivemq.com/demos/websocket-client/
 const char* broker = "broker.hivemq.com";
 
 //const char* topicLed = "GsmClientTest/led";
@@ -302,11 +303,12 @@ int GetPeriod() {
 }
 
 void loop() {
+  static int distance;
   static long getDistPeriod = 30;
   static long getDistAt = millis();
   if(getDistAt <= millis()) {
     getDistAt = millis() + getDistPeriod;
-    int distance = GetDistance;
+    distance = GetDistance();
   }
 
   if (!mqtt.connected()) {
@@ -327,7 +329,9 @@ void loop() {
   static long publishTimeAt = millis();
   if(publishTimeAt <= millis()) {
     publishTimeAt = millis() + publishTimePeriod;
-    mqtt.publish(topicWGTime, String(millis()).c_str());
+    String s = String(millis()) + " " + String(distance);
+    mqtt.publish(topicWGTime, s.c_str());
+    Serial.println(s);
   }
   
   mqtt.loop();

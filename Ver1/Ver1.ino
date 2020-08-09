@@ -72,7 +72,7 @@ void loop() {
     Serial.println(millis()); // Одно измерение длится 10мс
   }
   
-  //Serial.println(distance);
+  Serial.println(distance);
   printDisplay(String(distance));
 
   //+delay(50);

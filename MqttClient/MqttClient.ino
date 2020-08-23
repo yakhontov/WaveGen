@@ -149,7 +149,7 @@ void setup() {
   
 #ifdef USEI2C
   lcd.init();
-  lcd.backlight();
+  //lcd.backlight();
 #else
   lcd.begin(16, 2);
 #endif

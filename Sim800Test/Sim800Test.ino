@@ -1,10 +1,12 @@
 #include <SoftwareSerial.h>
-SoftwareSerial sim800(2, 3); // rx, tx
+SoftwareSerial sim800(12, 11); // rx, tx
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   sim800.begin(9600);
+  delay(1000);
   sim800.println("AT");
+  Serial.println("Trying AT");
 }
 
 void loop() {
@@ -12,4 +14,6 @@ void loop() {
     Serial.write(sim800.read());
   if(Serial.available())
     sim800.write(Serial.read());
+    if(digitalRead(4) == 0)
+      Serial.write('0');
 }

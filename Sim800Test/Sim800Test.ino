@@ -14,6 +14,4 @@ void loop() {
     Serial.write(sim800.read());
   if(Serial.available())
     sim800.write(Serial.read());
-    if(digitalRead(4) == 0)
-      Serial.write('0');
 }
